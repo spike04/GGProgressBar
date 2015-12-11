@@ -13,7 +13,6 @@ public class GGArcProgressBar extends GGProgressBar {
 
     private float mReachedBarWidth;
     private float mUnreachedBarWidth;
-    private float mRadius;
     private float mStartAngle;
 
     public GGArcProgressBar(Context context) {
@@ -29,13 +28,11 @@ public class GGArcProgressBar extends GGProgressBar {
 
         final float default_reached_bar_width = dp2px(1.5f);
         final float default_unreached_bar_width = dp2px(1.0f);
-        final float default_radius = dp2px(25.0f);
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GGProgressBar, defStyleAttr, 0);
 
         mReachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_width, default_reached_bar_width);
         mUnreachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_width, default_unreached_bar_width);
-        mRadius = a.getDimension(R.styleable.GGProgressBar_radius, default_radius);
         mStartAngle = a.getFloat(R.styleable.GGProgressBar_gpb_start_angle, 0);
 
         a.recycle();
@@ -55,19 +52,7 @@ public class GGArcProgressBar extends GGProgressBar {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getMinSize(widthMeasureSpec) + getPaddingLeft() + getPaddingRight(),
-                getMinSize(heightMeasureSpec) + getPaddingTop() + getPaddingBottom());
-    }
-
-    private int getMinSize(int measureSpec) {
-        int result;
-        int mode = MeasureSpec.getMode(measureSpec);
-        if (mode == MeasureSpec.EXACTLY){
-            result = MeasureSpec.getSize(measureSpec);
-        } else {
-            result = (int)mRadius * 2;
-        }
-        return result;
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
     }
 
     @Override
@@ -87,20 +72,16 @@ public class GGArcProgressBar extends GGProgressBar {
 
     @Override
     protected void setupRectFWithoutText() {
-        float centerX = getPaddingLeft() + (getWidth() - getPaddingLeft() - getPaddingRight())/2.0f;
-        float centerY = getPaddingTop() + (getHeight() - getPaddingTop() - getPaddingBottom())/2.0f;
-
-        mReachedRectF.left = centerX - mRadius + mReachedBarWidth/2.0f;
-        mReachedRectF.top = centerY - mRadius + mReachedBarWidth/2.0f;
-        mReachedRectF.right = centerX + mRadius - mReachedBarWidth/2.0f;;
-        mReachedRectF.bottom = centerY + mRadius -  mReachedBarWidth/2.0f;;
-
+        int padding = Math.max(Math.max(getPaddingLeft(), getPaddingRight()), Math.max(getPaddingTop(), getPaddingBottom()));
+        int size = getWidth() < getHeight() ? getWidth() : getHeight();
         if (mIfDrawUnreachedBar) {
-            mUnreachedRectF.left = centerX - mRadius + mUnreachedBarWidth/2.0f;
-            mUnreachedRectF.top = centerY - mRadius + mUnreachedBarWidth/2.0f;
-            mUnreachedRectF.right = centerX + mRadius - mUnreachedBarWidth/2.0f;
-            mUnreachedRectF.bottom = centerY + mRadius - mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.left = mUnreachedRectF.top = padding + mUnreachedBarWidth/2;
+            mUnreachedRectF.right = mUnreachedRectF.bottom = size - padding - mUnreachedBarWidth/2;
         }
+
+        mReachedRectF.left = mReachedRectF.top = padding + mReachedBarWidth/2;
+        mReachedRectF.right = mReachedRectF.bottom = size - padding - mReachedBarWidth/2;
+
     }
 
     @Override
@@ -123,10 +104,6 @@ public class GGArcProgressBar extends GGProgressBar {
         mUnreachedBarWidth = width;
     }
 
-    public void setRadius(float radius) {
-        mRadius = radius;
-    }
-
     public float getReachedBarWidth() {
         return mReachedBarWidth;
     }
@@ -135,7 +112,4 @@ public class GGArcProgressBar extends GGProgressBar {
         return mUnreachedBarWidth;
     }
 
-    public float getRadius() {
-        return mRadius;
-    }
 }

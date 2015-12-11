@@ -24,7 +24,6 @@
 
         <!-- for Arc Progress Bar -->
         <attr name="gpb_start_angle" format="float"/>
-        <attr name="radius" format="dimension"/>
     </declare-styleable>
 
 </resources>
