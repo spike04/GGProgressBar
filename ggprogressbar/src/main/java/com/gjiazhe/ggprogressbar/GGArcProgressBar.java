@@ -72,16 +72,24 @@ public class GGArcProgressBar extends GGProgressBar {
 
     @Override
     protected void setupRectFWithoutText() {
-        int padding = Math.max(Math.max(getPaddingLeft(), getPaddingRight()), Math.max(getPaddingTop(), getPaddingBottom()));
-        int size = getWidth() < getHeight() ? getWidth() : getHeight();
+        int paddingLeft = getPaddingLeft();
+        int paddingTop = getPaddingTop();
+        int paddingRight = getPaddingRight();
+        int paddingBottom = getPaddingBottom();
+        int widthWithoutPadding = getWidth() - paddingLeft - paddingRight;
+        int heightWithoutPadding = getHeight() - paddingTop - paddingBottom;
+        int diameter = Math.min(widthWithoutPadding, heightWithoutPadding);
+        mReachedRectF.left = paddingLeft + mReachedBarWidth/2.0f;
+        mReachedRectF.top = paddingTop + mReachedBarWidth/2.0f;
+        mReachedRectF.right = paddingLeft + diameter - mReachedBarWidth/2.0f;
+        mReachedRectF.bottom = paddingTop + diameter - mReachedBarWidth/2.0f;
+
         if (mIfDrawUnreachedBar) {
-            mUnreachedRectF.left = mUnreachedRectF.top = padding + mUnreachedBarWidth/2;
-            mUnreachedRectF.right = mUnreachedRectF.bottom = size - padding - mUnreachedBarWidth/2;
+            mUnreachedRectF.left = paddingLeft + mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.top = paddingTop + mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.right = paddingLeft + diameter - mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.bottom = paddingTop + diameter - mUnreachedBarWidth/2.0f;
         }
-
-        mReachedRectF.left = mReachedRectF.top = padding + mReachedBarWidth/2;
-        mReachedRectF.right = mReachedRectF.bottom = size - padding - mReachedBarWidth/2;
-
     }
 
     @Override
@@ -98,10 +106,14 @@ public class GGArcProgressBar extends GGProgressBar {
 
     public void setReachedBarWidth(float width) {
         mReachedBarWidth = width;
+        mReachedBarPaint.setStrokeWidth(width);
     }
 
     public void setUnreachedBarWidth(float width) {
-        mUnreachedBarWidth = width;
+        if (mIfDrawUnreachedBar) {
+            mUnreachedBarWidth = width;
+            mUnreachedBarPaint.setStrokeWidth(width);
+        }
     }
 
     public float getReachedBarWidth() {

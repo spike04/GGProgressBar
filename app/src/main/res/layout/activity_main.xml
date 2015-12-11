@@ -34,7 +34,9 @@
         android:layout_toRightOf="@id/vertical_bar"
         app:gpb_start_angle="90"
         style="@style/GG_ProgressBar_Funny_Orange"
-        app:gpb_progress="15"/>
+        app:gpb_progress="15"
+        app:gpb_reached_bar_width="20dp"
+        app:gpb_unreached_bar_width="30dp"/>
 
     <Button
         android:id="@+id/reset_btn"

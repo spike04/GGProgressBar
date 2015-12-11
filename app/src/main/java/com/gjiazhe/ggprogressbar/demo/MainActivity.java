@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         verticalBar = (GGVerticalProgressBar) findViewById(R.id.vertical_bar);
         circularBar = (GGArcProgressBar) findViewById(R.id.circular_bar);
 
+        circularBar.setReachedBarWidth(30);
+
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
