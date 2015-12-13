@@ -88,17 +88,22 @@ public class GGArcProgressBar extends GGProgressBar {
         int widthWithoutPadding = getWidth() - paddingLeft - paddingRight;
         int heightWithoutPadding = getHeight() - paddingTop - paddingBottom;
         int diameter = Math.min(widthWithoutPadding, heightWithoutPadding);
-        mReachedRectF.left = paddingLeft + mReachedBarWidth/2.0f;
-        mReachedRectF.top = paddingTop + mReachedBarWidth/2.0f;
-        mReachedRectF.right = paddingLeft + diameter - mReachedBarWidth/2.0f;
-        mReachedRectF.bottom = paddingTop + diameter - mReachedBarWidth/2.0f;
 
+        float offset;
         if (mIfDrawUnreachedBar) {
-            mUnreachedRectF.left = paddingLeft + mUnreachedBarWidth/2.0f;
-            mUnreachedRectF.top = paddingTop + mUnreachedBarWidth/2.0f;
-            mUnreachedRectF.right = paddingLeft + diameter - mUnreachedBarWidth/2.0f;
-            mUnreachedRectF.bottom = paddingTop + diameter - mUnreachedBarWidth/2.0f;
+            offset = (mReachedBarWidth > mUnreachedBarWidth) ? (mReachedBarWidth/2.0f) : (mUnreachedBarWidth/2.0f);
+            mUnreachedRectF.left = paddingLeft + offset;
+            mUnreachedRectF.top = paddingTop + offset;
+            mUnreachedRectF.right = paddingLeft + diameter - offset;
+            mUnreachedRectF.bottom = paddingTop + diameter - offset;
+        } else {
+            offset = mReachedBarWidth/2.0f;
         }
+
+        mReachedRectF.left = paddingLeft + offset;
+        mReachedRectF.top = paddingTop + offset;
+        mReachedRectF.right = paddingLeft + diameter - offset;
+        mReachedRectF.bottom = paddingTop + diameter - offset;
     }
 
     @Override
