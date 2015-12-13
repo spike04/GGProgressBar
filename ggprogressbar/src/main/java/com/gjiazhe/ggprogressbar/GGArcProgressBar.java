@@ -124,4 +124,12 @@ public class GGArcProgressBar extends GGProgressBar {
         return mUnreachedBarWidth;
     }
 
+    public float getReachedBarRadius() {
+        return (mReachedRectF.right - mReachedRectF.left + mReachedBarWidth)/2.0f;
+    }
+
+    public float getUnreachedBarRadius() {
+        return (mUnreachedRectF.right - mUnreachedRectF.left + mUnreachedBarWidth)/2.0f;
+    }
+
 }
