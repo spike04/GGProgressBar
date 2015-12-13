@@ -11,7 +11,7 @@ import android.view.View;
 /**
  * Created by gjz on 12/11/15.
  */
-public class GGProgressBar extends View {
+public abstract class GGProgressBar extends View {
 
     protected final int DEFAULT_REACHED_BAR_COLOR = 0xFF3F51B5;
     protected final int DEFAULT_UNREACHED_BAR_COLOR = 0x553F51B5;
@@ -108,9 +108,9 @@ public class GGProgressBar extends View {
     }
 
 
-    protected void setupRectFWithText(){}
+    protected abstract void setupRectFWithText();
 
-    protected void setupRectFWithoutText(){}
+    protected abstract void setupRectFWithoutText();
 
     /**
      * Get progress text color.
