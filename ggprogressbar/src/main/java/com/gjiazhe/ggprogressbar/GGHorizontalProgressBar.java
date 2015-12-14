@@ -3,6 +3,8 @@ package com.gjiazhe.ggprogressbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 
 /**
@@ -20,6 +22,8 @@ public class GGHorizontalProgressBar extends GGProgressBar {
      */
     private float mUnreachedBarHeight;
 
+    private boolean mIfRoundcorner;
+
     public GGHorizontalProgressBar(Context context) {
         this(context, null);
     }
@@ -34,11 +38,11 @@ public class GGHorizontalProgressBar extends GGProgressBar {
         final float default_reached_bar_height = dp2px(1.5f);
         final float default_unreached_bar_height = dp2px(1.0f);
 
-        //load styled attributes.
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GGProgressBar, defStyleAttr, 0);
 
         mReachedBarHeight = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_height, default_reached_bar_height);
         mUnreachedBarHeight = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_height, default_unreached_bar_height);
+        mIfRoundcorner = a.getBoolean(R.styleable.GGProgressBar_gpb_round_corner, false);
 
         a.recycle();
         setupPaints();
@@ -75,10 +79,19 @@ public class GGHorizontalProgressBar extends GGProgressBar {
         }
 
         if (mIfDrawReachedBar) {
-            canvas.drawRect(mReachedRectF, mReachedBarPaint);
+            drawBar(canvas, mReachedRectF, mReachedBarHeight, mReachedBarPaint);
         }
         if (mIfDrawUnreachedBar && mUnreachedRectF.left < getWidth() - getPaddingRight()) {
-            canvas.drawRect(mUnreachedRectF, mUnreachedBarPaint);
+            drawBar(canvas, mUnreachedRectF, mUnreachedBarHeight, mUnreachedBarPaint);
+        }
+    }
+
+    private void drawBar(Canvas canvas, RectF bar, float barSize, Paint barPaint) {
+        if (mIfRoundcorner) {
+            float cornerRadius = barSize/2.0f;
+            canvas.drawRoundRect(bar, cornerRadius, cornerRadius, barPaint);
+        } else {
+            canvas.drawRect(bar, barPaint);
         }
     }
 
