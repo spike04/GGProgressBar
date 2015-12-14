@@ -89,13 +89,15 @@ public class GGVerticalProgressBar extends GGProgressBar {
 
     @Override
     protected void setupRectFWithoutText() {
-        mReachedRectF.left = getPaddingLeft();
+        int widthWithoutPadding = getWidth() - getPaddingLeft() - getPaddingRight();
+
+        mReachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mReachedBarWidth/2.0f;
         mReachedRectF.top = getPaddingTop();
         mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
         mReachedRectF.bottom = getPaddingTop() +  (getHeight() - getPaddingTop() - getPaddingBottom()) / (mMaxProgress * 1.0f) * mShownProgress;
 
         if (mIfDrawUnreachedBar) {
-            mUnreachedRectF.left = getPaddingLeft();
+            mUnreachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mUnreachedBarWidth/2.0f;
             mUnreachedRectF.top = mReachedRectF.bottom;
             mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
             mUnreachedRectF.bottom = getHeight() - getPaddingBottom();
@@ -107,15 +109,16 @@ public class GGVerticalProgressBar extends GGProgressBar {
         mDrawText = String.format("%3d", mShownProgress * 100 / mMaxProgress);
         mDrawText = mPrefix + mDrawText + mSuffix;
 
+        int widthWithoutpadding = getWidth() - getPaddingLeft() - getPaddingRight();
         float drawTextWidth = mTextPaint.measureText(mPrefix + "100" + mSuffix);
-        mDrawTextX = getPaddingLeft() + (getWidth() - getPaddingLeft() - getPaddingRight())/2.0f - drawTextWidth/2.0f;
+        mDrawTextX = getPaddingLeft() + widthWithoutpadding/2.0f - drawTextWidth/2.0f;
 
         if (mShownProgress == 0) {
             mIfDrawReachedBar = false;
             mDrawTextY = getPaddingTop() + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
         } else {
             mIfDrawReachedBar = true;
-            mReachedRectF.left = getPaddingLeft() + (getWidth() - getPaddingLeft() - getPaddingRight())/2.0f - mReachedBarWidth/2.0f;
+            mReachedRectF.left = getPaddingLeft() + widthWithoutpadding/2.0f - mReachedBarWidth/2.0f;
             mReachedRectF.top = getPaddingTop();
             mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
             mReachedRectF.bottom = getPaddingTop() +  (getHeight() - getPaddingTop() - getPaddingBottom()) / (mMaxProgress * 1.0f) * mShownProgress - mTextOffset;
@@ -128,7 +131,7 @@ public class GGVerticalProgressBar extends GGProgressBar {
         }
 
         if (mIfDrawUnreachedBar) {
-            mUnreachedRectF.left = getPaddingLeft() + (getWidth() - getPaddingLeft() - getPaddingRight())/2.0f - mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.left = getPaddingLeft() + widthWithoutpadding/2.0f - mUnreachedBarWidth/2.0f;
             mUnreachedRectF.top = mDrawTextY + mTextPaint.descent() + mTextOffset;
             mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
             mUnreachedRectF.bottom = getHeight() - getPaddingBottom();
