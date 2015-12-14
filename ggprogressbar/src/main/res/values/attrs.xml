@@ -14,18 +14,14 @@
         <attr name="gpb_prefix" format="string"/>
         <attr name="gpb_suffix" format="string"/>
 
-        <attr name="gpb_round_corner" format="boolean"/>
         <!-- for Linear Progress Bar -->
         <attr name="orientation" format="enum">
-            <enum name="HORIZONTAL" value="1"/>
-            <enum name="VERTICAL" value="2"/>
+            <enum name="horizontal" value="1"/>
+            <enum name="vertical" value="2"/>
         </attr>
-
-        <!-- for Horizontal Progress Bar -->
+        <attr name="gpb_round_corner" format="boolean"/>
         <attr name="gpb_reached_bar_height" format="dimension"/>
         <attr name="gpb_unreached_bar_height" format="dimension"/>
-
-        <!-- for Vertical Progress Bar and Circular Progress Bar -->
         <attr name="gpb_reached_bar_width" format="dimension"/>
         <attr name="gpb_unreached_bar_width" format="dimension"/>
 
