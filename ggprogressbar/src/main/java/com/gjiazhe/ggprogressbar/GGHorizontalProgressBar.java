@@ -85,16 +85,18 @@ public class GGHorizontalProgressBar extends GGProgressBar {
 
     @Override
     protected void setupRectFWithoutText() {
+        int heightWithoutPadding = getHeight() - getPaddingTop() - getPaddingBottom();
+
         mReachedRectF.left = getPaddingLeft();
-        mReachedRectF.top = getHeight() / 2.0f - mReachedBarHeight / 2.0f;
-        mReachedRectF.right = (getWidth() - getPaddingLeft() - getPaddingRight()) / (getMax() * 1.0f) * getShownProgress() + getPaddingLeft();
-        mReachedRectF.bottom = getHeight() / 2.0f + mReachedBarHeight / 2.0f;
+        mReachedRectF.top = getPaddingTop() + heightWithoutPadding/2.0f - mReachedBarHeight/2.0f;
+        mReachedRectF.right = mReachedRectF.left + (getWidth() - getPaddingLeft() - getPaddingRight()) / (mMaxProgress * 1.0f) * mShownProgress;
+        mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
 
         if (mIfDrawUnreachedBar) {
             mUnreachedRectF.left = mReachedRectF.right;
             mUnreachedRectF.right = getWidth() - getPaddingRight();
-            mUnreachedRectF.top = getHeight() / 2.0f - mUnreachedBarHeight / 2.0f;
-            mUnreachedRectF.bottom = getHeight() / 2.0f + mUnreachedBarHeight / 2.0f;
+            mUnreachedRectF.top = getPaddingTop() + heightWithoutPadding/2.0f - mUnreachedBarHeight/2.0f;
+            mUnreachedRectF.bottom = mUnreachedRectF.top + mUnreachedBarHeight;
         }
     }
 

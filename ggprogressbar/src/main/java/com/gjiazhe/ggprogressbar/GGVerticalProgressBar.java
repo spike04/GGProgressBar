@@ -94,7 +94,7 @@ public class GGVerticalProgressBar extends GGProgressBar {
         mReachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mReachedBarWidth/2.0f;
         mReachedRectF.top = getPaddingTop();
         mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
-        mReachedRectF.bottom = getPaddingTop() +  (getHeight() - getPaddingTop() - getPaddingBottom()) / (mMaxProgress * 1.0f) * mShownProgress;
+        mReachedRectF.bottom = mReachedRectF.top +  (getHeight() - getPaddingTop() - getPaddingBottom()) / (mMaxProgress * 1.0f) * mShownProgress;
 
         if (mIfDrawUnreachedBar) {
             mUnreachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mUnreachedBarWidth/2.0f;
