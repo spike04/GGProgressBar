@@ -3,6 +3,9 @@ package com.gjiazhe.ggprogressbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 
 /**
@@ -12,6 +15,7 @@ public class GGVerticalProgressBar extends GGProgressBar {
 
     private float mReachedBarWidth;
     private float mUnreachedBarWidth;
+    private boolean mIfRoundcorner;
 
     public GGVerticalProgressBar(Context context) {
         this(context, null);
@@ -31,6 +35,7 @@ public class GGVerticalProgressBar extends GGProgressBar {
 
         mReachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_width, default_reached_bar_width);//default_reached_bar_width;
         mUnreachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_width, default_unreached_bar_width);//default_unreached_bar_width;
+        mIfRoundcorner = a.getBoolean(R.styleable.GGProgressBar_gpb_round_corner, false);
 
         a.recycle();
         setupPaints();
@@ -66,10 +71,19 @@ public class GGVerticalProgressBar extends GGProgressBar {
         }
 
         if (mIfDrawReachedBar) {
-            canvas.drawRect(mReachedRectF, mReachedBarPaint);
+            drawBar(canvas, mReachedRectF, mReachedBarWidth, mReachedBarPaint);
         }
         if (mIfDrawUnreachedBar && mUnreachedRectF.top < getHeight() - getPaddingBottom()) {
-            canvas.drawRect(mUnreachedRectF, mUnreachedBarPaint);
+            drawBar(canvas, mUnreachedRectF, mUnreachedBarWidth, mUnreachedBarPaint);
+        }
+    }
+
+    private void drawBar(Canvas canvas, RectF bar, float barSize, Paint barPaint) {
+        if (mIfRoundcorner) {
+            float cornerRadius = barSize/2.0f;
+            canvas.drawRoundRect(bar, cornerRadius, cornerRadius, barPaint);
+        } else {
+            canvas.drawRect(bar, barPaint);
         }
     }
 
