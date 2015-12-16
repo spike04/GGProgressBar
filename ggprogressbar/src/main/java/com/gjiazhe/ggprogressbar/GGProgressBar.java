@@ -34,7 +34,7 @@ public abstract class GGProgressBar extends View {
     protected int mShownProgress;
 
     protected boolean mIfDrawText;
-    protected String mDrawText;
+    protected String mText;
     protected float mTextSize;
     protected int mTextColor;
     protected float mTextOffset;
@@ -107,10 +107,6 @@ public abstract class GGProgressBar extends View {
         }
     }
 
-
-    protected abstract void setupRectFWithText();
-
-    protected abstract void setupRectFWithoutText();
 
     /**
      * Get progress text color.

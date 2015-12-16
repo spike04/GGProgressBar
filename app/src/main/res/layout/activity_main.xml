@@ -11,27 +11,35 @@
     tools:context="com.gjiazhe.ggprogressbar.demo.MainActivity">
 
     <com.gjiazhe.ggprogressbar.GGLinearProgressBar
-        android:id="@+id/linear_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:orientation="horizontal"
-        app:gpb_progress="20"
-        app:gpb_round_corner="true"/>
+    android:id="@+id/linear_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+    app:orientation="right_to_left"
+    app:gpb_progress="50"
+    app:gpb_round_corner="true"
+    app:gpb_text_visibility="true" />
 
     <com.gjiazhe.ggprogressbar.GGLinearProgressBar
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/vertical_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_bar"
         android:layout_alignParentLeft="true"
-        app:gpb_progress="30"
+        app:gpb_progress="50"
         app:gpb_text_visibility="true"
-        app:gpb_round_corner="true"
-        app:orientation="vertical"/>
+        app:gpb_round_corner="false"
+        app:orientation="bottom_to_top" />
+    <com.gjiazhe.ggprogressbar.GGLinearProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_bar"
+        android:layout_toRightOf="@id/vertical_bar"
+        app:gpb_progress="50"
+        app:gpb_text_visibility="true"
+        app:gpb_round_corner="false"
+        app:orientation="top_to_bottom"/>
 
     <com.gjiazhe.ggprogressbar.GGArcProgressBar
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/circular_bar"
         android:layout_width="50dp"
         android:layout_height="wrap_content"

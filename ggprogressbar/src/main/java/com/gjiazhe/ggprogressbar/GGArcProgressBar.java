@@ -68,7 +68,7 @@ public class GGArcProgressBar extends GGProgressBar {
     protected void onDraw(Canvas canvas) {
         if (mIfDrawText){
             setupRectFWithText();
-            canvas.drawText(mDrawText, mDrawTextX, mDrawTextY, mTextPaint);
+            canvas.drawText(mText, mDrawTextX, mDrawTextY, mTextPaint);
         }else {
             setupRectFWithoutText();
         }
@@ -79,7 +79,6 @@ public class GGArcProgressBar extends GGProgressBar {
         canvas.drawArc(mReachedRectF, mStartAngle, mShownProgress * 360 / mMaxProgress, false, mReachedBarPaint);
     }
 
-    @Override
     protected void setupRectFWithoutText() {
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
@@ -106,14 +105,13 @@ public class GGArcProgressBar extends GGProgressBar {
         mReachedRectF.bottom = paddingTop + diameter - offset;
     }
 
-    @Override
     protected void setupRectFWithText() {
         setupRectFWithoutText();
 
-        mDrawText = String.format("%d", mShownProgress * 100 / mMaxProgress);
-        mDrawText = mPrefix + mDrawText + mSuffix;
+        mText = String.format("%d", mShownProgress * 100 / mMaxProgress);
+        mText = mPrefix + mText + mSuffix;
 
-        float DrawTextWidth = mTextPaint.measureText(mDrawText);
+        float DrawTextWidth = mTextPaint.measureText(mText);
         mDrawTextX = (mReachedRectF.right + mReachedRectF.left)/2.0f - DrawTextWidth/2.0f;
         mDrawTextY = (mReachedRectF.bottom + mReachedRectF.top)/2.0f- (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
     }

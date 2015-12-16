@@ -16,8 +16,11 @@ public class GGLinearProgressBar extends GGProgressBar {
      * flag of orizentation
      */
     private int mOrientation;
-    private final int ORIENTATION_HORIZONTAL = 1;
-    private final int ORIENTATION_VERTICAL = 2;
+    private final int LETF_RIGHT = 1;
+    private final int TOP_BOTTOM = 2;
+    private final int RIGHT_LEFT = 3;
+    private final int BOTTOM_TOP = 4;
+    private boolean isHorizontal;
 
     /**
      * The height of the reached area, used when the bar is horizontal
@@ -44,6 +47,9 @@ public class GGLinearProgressBar extends GGProgressBar {
      */
     private boolean mIfRoundcorner;
 
+    private int heightWithoutPadding;
+    private int widthWithoutPadding;
+
     public GGLinearProgressBar(Context context) {
         this(context, null);
     }
@@ -60,11 +66,13 @@ public class GGLinearProgressBar extends GGProgressBar {
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GGProgressBar, defStyleAttr, 0);
 
-        mOrientation = a.getInt(R.styleable.GGProgressBar_orientation, ORIENTATION_HORIZONTAL);
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        mOrientation = a.getInt(R.styleable.GGProgressBar_orientation, LETF_RIGHT);
+        if (mOrientation == LETF_RIGHT || mOrientation == RIGHT_LEFT) {
+            isHorizontal = true;
             mReachedBarHeight = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_height, default_reached_bar_size);
             mUnreachedBarHeight = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_height, default_unreached_bar_size);
         } else {
+            isHorizontal = false;
             mReachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_width, default_reached_bar_size);
             mUnreachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_width, default_unreached_bar_size);
         }
@@ -78,7 +86,7 @@ public class GGLinearProgressBar extends GGProgressBar {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width;
         int height;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (isHorizontal) {
             width = MeasureSpec.getSize(widthMeasureSpec);
             int height_mode = MeasureSpec.getMode(heightMeasureSpec);
             if (height_mode == MeasureSpec.EXACTLY) {
@@ -117,25 +125,28 @@ public class GGLinearProgressBar extends GGProgressBar {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        heightWithoutPadding = getHeight() - getPaddingTop() - getPaddingBottom();
+        widthWithoutPadding = getWidth() - getPaddingLeft() - getPaddingRight();
+
         if (mIfDrawText){
             setupRectFWithText();
-            canvas.drawText(mDrawText, mDrawTextX, mDrawTextY, mTextPaint);
+            canvas.drawText(mText, mDrawTextX, mDrawTextY, mTextPaint);
         }else {
-            setupRectFWithoutText();
+            setupRectFWithoutText(canvas);
         }
 
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (isHorizontal) {
             if (mIfDrawReachedBar) {
                 drawBar(canvas, mReachedRectF, mReachedBarHeight, mReachedBarPaint);
             }
-            if (mIfDrawUnreachedBar && mUnreachedRectF.left < getWidth() - getPaddingRight()) {
+            if (mIfDrawUnreachedBar) {
                 drawBar(canvas, mUnreachedRectF, mUnreachedBarHeight, mUnreachedBarPaint);
             }
         } else {
             if (mIfDrawReachedBar) {
                 drawBar(canvas, mReachedRectF, mReachedBarWidth, mReachedBarPaint);
             }
-            if (mIfDrawUnreachedBar && mUnreachedRectF.top < getHeight() - getPaddingBottom()) {
+            if (mIfDrawUnreachedBar) {
                 drawBar(canvas, mUnreachedRectF, mUnreachedBarWidth, mUnreachedBarPaint);
             }
         }
@@ -150,150 +161,222 @@ public class GGLinearProgressBar extends GGProgressBar {
         }
     }
 
-
-    @Override
     protected void setupRectFWithText() {
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
-            mDrawText = String.format("%d", mShownProgress * 100 / mMaxProgress);
-            mDrawText = mPrefix + mDrawText + mSuffix;
-
-            float DrawTextWidth = mTextPaint.measureText(mDrawText);
-            mDrawTextY = getPaddingTop() + (getHeight() - getPaddingTop() - getPaddingBottom())/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
-
-            if (getShownProgress() == 0) {
-                mIfDrawReachedBar = false;
-                mDrawTextX = getPaddingLeft();
-            } else {
-                mIfDrawReachedBar = true;
-                mReachedRectF.left = getPaddingLeft();
-                mReachedRectF.top = getPaddingTop() + (getHeight() - getPaddingTop() - getPaddingBottom())/2.0f - mReachedBarHeight/2.0f;
-                mReachedRectF.right = (getWidth() - getPaddingLeft() - getPaddingRight()) / (getMax() * 1.0f) * getShownProgress() - mTextOffset + getPaddingLeft();
-                mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
-                mDrawTextX = (mReachedRectF.right + mTextOffset);
-            }
-
-            if ((mDrawTextX + DrawTextWidth) >= getWidth() - getPaddingRight()) {
-                mDrawTextX = getWidth() - getPaddingRight() - DrawTextWidth;
-                mReachedRectF.right = mDrawTextX - mTextOffset;
-            }
-
-            if (mIfDrawUnreachedBar) {
-                mUnreachedRectF.left = mDrawTextX + DrawTextWidth + mTextOffset;
-                mUnreachedRectF.top = getPaddingTop() + (getHeight() - getPaddingTop() - getPaddingBottom())/2.0f - mUnreachedBarHeight/2.0f;
-                mUnreachedRectF.right = getWidth() - getPaddingRight();
-                mUnreachedRectF.bottom = mUnreachedRectF.top + mUnreachedBarHeight;
-            }
-        } else {
-            mDrawText = String.format("%3d", mShownProgress * 100 / mMaxProgress);
-            mDrawText = mPrefix + mDrawText + mSuffix;
-
-            int widthWithoutpadding = getWidth() - getPaddingLeft() - getPaddingRight();
-            float drawTextWidth = mTextPaint.measureText(mPrefix + "100" + mSuffix);
-            mDrawTextX = getPaddingLeft() + widthWithoutpadding/2.0f - drawTextWidth/2.0f;
-
-            if (mShownProgress == 0) {
-                mIfDrawReachedBar = false;
-                mDrawTextY = getPaddingTop() + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
-            } else {
-                mIfDrawReachedBar = true;
-                mReachedRectF.left = getPaddingLeft() + widthWithoutpadding/2.0f - mReachedBarWidth/2.0f;
-                mReachedRectF.top = getPaddingTop();
-                mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
-                mReachedRectF.bottom = getPaddingTop() +  (getHeight() - getPaddingTop() - getPaddingBottom()) / (mMaxProgress * 1.0f) * mShownProgress - mTextOffset;
-                mDrawTextY = mReachedRectF.bottom + mTextOffset + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
-            }
-
-            if (mDrawTextY + mTextPaint.descent() > getHeight() - getPaddingBottom()) {
-                mDrawTextY = getHeight() - getPaddingBottom() - mTextPaint.descent();
-                mReachedRectF.bottom = mDrawTextY - mTextOffset - mTextSize/2.0f + (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
-            }
-
-            if (mIfDrawUnreachedBar) {
-                mUnreachedRectF.left = getPaddingLeft() + widthWithoutpadding/2.0f - mUnreachedBarWidth/2.0f;
-                mUnreachedRectF.top = mDrawTextY + mTextPaint.descent() + mTextOffset;
-                mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
-                mUnreachedRectF.bottom = getHeight() - getPaddingBottom();
-            }
+        switch (mOrientation) {
+            case LETF_RIGHT:setupRectFWithText_leftToRight();break;
+            case TOP_BOTTOM:setupRectFWithText_topToBottom();break;
+            case RIGHT_LEFT:setupRectFWithText_rightToLeft();break;
+            case BOTTOM_TOP:setupRectFWithText_bottomToTop();break;
         }
     }
-    @Override
-    protected void setupRectFWithoutText() {
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
-            int heightWithoutPadding = getHeight() - getPaddingTop() - getPaddingBottom();
+    private void setupRectFWithText_leftToRight() {
+        formatText();
+        float drawTextWidth = mTextPaint.measureText(mText);
+        mDrawTextY = getPaddingTop() + (heightWithoutPadding)/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
 
-            mReachedRectF.left = getPaddingLeft();
-            mReachedRectF.top = getPaddingTop() + heightWithoutPadding/2.0f - mReachedBarHeight/2.0f;
-            mReachedRectF.right = mReachedRectF.left + (getWidth() - getPaddingLeft() - getPaddingRight()) / (mMaxProgress * 1.0f) * mShownProgress;
-            mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
-
-            if (mIfDrawUnreachedBar) {
-                mUnreachedRectF.left = mReachedRectF.right;
-                mUnreachedRectF.right = getWidth() - getPaddingRight();
-                mUnreachedRectF.top = getPaddingTop() + heightWithoutPadding/2.0f - mUnreachedBarHeight/2.0f;
-                mUnreachedRectF.bottom = mUnreachedRectF.top + mUnreachedBarHeight;
-            }
+        if (mShownProgress == 0) {
+            mIfDrawReachedBar = false;
+            mDrawTextX = getPaddingLeft();
         } else {
-            int widthWithoutPadding = getWidth() - getPaddingLeft() - getPaddingRight();
+            mIfDrawReachedBar = true;
+            mReachedRectF.left = getPaddingLeft();
+            mReachedRectF.top = getPaddingTop() + (heightWithoutPadding)/2.0f - mReachedBarHeight/2.0f;
+            mReachedRectF.right = mReachedRectF.left + widthWithoutPadding / (getMax() * 1.0f) * getShownProgress() - mTextOffset;
+            mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
+            mDrawTextX = mReachedRectF.right + mTextOffset;
+        }
 
-            mReachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mReachedBarWidth/2.0f;
+        if ((mDrawTextX + drawTextWidth) >= getWidth() - getPaddingRight()) {
+            mDrawTextX = getWidth() - getPaddingRight() - drawTextWidth;
+            mReachedRectF.right = mDrawTextX - mTextOffset;
+        }
+
+        if (mIfDrawUnreachedBar) {
+            mUnreachedRectF.left = mDrawTextX + drawTextWidth + mTextOffset;
+            mUnreachedRectF.top = getPaddingTop() + (heightWithoutPadding)/2.0f - mUnreachedBarHeight/2.0f;
+            mUnreachedRectF.right = getWidth() - getPaddingRight();
+            mUnreachedRectF.bottom = mUnreachedRectF.top + mUnreachedBarHeight;
+        }
+    }
+
+    private void setupRectFWithText_rightToLeft() {
+        formatText();
+        float drawTextWidth = mTextPaint.measureText(mText);
+        mDrawTextY = getPaddingTop() + (heightWithoutPadding)/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
+
+        if (mShownProgress == 0) {
+            mIfDrawReachedBar = false;
+            mDrawTextX = getWidth() - getPaddingRight() - drawTextWidth;
+        } else {
+            mIfDrawReachedBar = true;
+            mReachedRectF.right =getWidth() - getPaddingRight();
+            mReachedRectF.top = getPaddingTop() + (heightWithoutPadding)/2.0f - mReachedBarHeight/2.0f;
+            mReachedRectF.left = mReachedRectF.right - widthWithoutPadding / (getMax() * 1.0f) * getShownProgress() + mTextOffset;
+            mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
+            mDrawTextX = mReachedRectF.left - mTextOffset - drawTextWidth;
+        }
+
+        if (mDrawTextX < getPaddingLeft()) {
+            mDrawTextX = getPaddingLeft();
+            mReachedRectF.left = mDrawTextX + drawTextWidth + mTextOffset;
+        }
+
+        if (mIfDrawUnreachedBar) {
+            mUnreachedRectF.right = mDrawTextX - mTextOffset;
+            mUnreachedRectF.top = getPaddingTop() + (heightWithoutPadding)/2.0f - mUnreachedBarHeight/2.0f;
+            mUnreachedRectF.left = getPaddingLeft();
+            mUnreachedRectF.bottom = mUnreachedRectF.top + mUnreachedBarHeight;
+        }
+    }
+
+    private void setupRectFWithText_topToBottom() {
+        formatText();
+        float drawTextWidth = mTextPaint.measureText(mPrefix + "100" + mSuffix);
+        mDrawTextX = getPaddingLeft() + widthWithoutPadding /2.0f - drawTextWidth/2.0f;
+
+        if (mShownProgress == 0) {
+            mIfDrawReachedBar = false;
+            mDrawTextY = getPaddingTop() + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
+        } else {
+            mIfDrawReachedBar = true;
+            mReachedRectF.left = getPaddingLeft() + widthWithoutPadding /2.0f - mReachedBarWidth/2.0f;
             mReachedRectF.top = getPaddingTop();
             mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
-            mReachedRectF.bottom = mReachedRectF.top +  (getHeight() - getPaddingTop() - getPaddingBottom()) / (mMaxProgress * 1.0f) * mShownProgress;
-
-            if (mIfDrawUnreachedBar) {
-                mUnreachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mUnreachedBarWidth/2.0f;
-                mUnreachedRectF.top = mReachedRectF.bottom;
-                mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
-                mUnreachedRectF.bottom = getHeight() - getPaddingBottom();
-            }
+            mReachedRectF.bottom = mReachedRectF.top + heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress - mTextOffset;
+            mDrawTextY = mReachedRectF.bottom + mTextOffset + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
         }
+
+        if (mDrawTextY + mTextPaint.descent() > getHeight() - getPaddingBottom()) {
+            mDrawTextY = getHeight() - getPaddingBottom() - mTextPaint.descent();
+            mReachedRectF.bottom = mDrawTextY - mTextOffset - mTextSize/2.0f + (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
+        }
+
+        if (mIfDrawUnreachedBar) {
+            mUnreachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.top = mDrawTextY + mTextPaint.descent() + mTextOffset;
+            mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
+            mUnreachedRectF.bottom = getHeight() - getPaddingBottom();
+        }
+    }
+
+    private void setupRectFWithText_bottomToTop() {
+        formatText();
+        float drawTextWidth = mTextPaint.measureText(mPrefix + "100" + mSuffix);
+        mDrawTextX = getPaddingLeft() + widthWithoutPadding /2.0f - drawTextWidth/2.0f;
+
+        if (mShownProgress == 0) {
+            mIfDrawReachedBar = false;
+            mDrawTextY = getHeight() - getPaddingBottom() - (mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f);
+        } else {
+            mIfDrawReachedBar = true;
+            mReachedRectF.left =  getPaddingLeft() + widthWithoutPadding /2.0f - mReachedBarWidth/2.0f;
+            mReachedRectF.bottom = getHeight() - getPaddingBottom();
+            mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
+            mReachedRectF.top = mReachedRectF.bottom - heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress + mTextOffset;
+            mDrawTextY = mReachedRectF.top - mTextOffset - (mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f);
+        }
+
+        if (mDrawTextY + mTextPaint.ascent() < getPaddingTop()) {
+            mDrawTextY = getPaddingTop() - mTextPaint.ascent();
+            mReachedRectF.top = mDrawTextY + mTextOffset - (mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f);
+        }
+
+        if (mIfDrawUnreachedBar) {
+            mUnreachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.bottom = mDrawTextY + mTextPaint.ascent() - mTextOffset;
+            mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
+            mUnreachedRectF.top = getPaddingTop();
+        }
+    }
+
+    protected void setupRectFWithoutText(Canvas canvas) {
+        switch (mOrientation) {
+            case LETF_RIGHT:setupRectWithoutText_leftToRight();break;
+            case TOP_BOTTOM:setupRectWithoutText_topToBottom();break;
+            case RIGHT_LEFT:canvas.rotate(180, getWidth()/2.0f, getHeight()/2.0f);setupRectWithoutText_leftToRight();break;
+            case BOTTOM_TOP:canvas.rotate(180, getWidth()/2.0f, getHeight()/2.0f);setupRectWithoutText_topToBottom();break;
+        }
+    }
+
+    private void setupRectWithoutText_leftToRight() {
+        mReachedRectF.left = getPaddingLeft();
+        mReachedRectF.top = getPaddingTop() + heightWithoutPadding/2.0f - mReachedBarHeight/2.0f;
+        mReachedRectF.right = mReachedRectF.left + (getWidth() - getPaddingLeft() - getPaddingRight()) / (mMaxProgress * 1.0f) * mShownProgress;
+        mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
+
+        if (mIfDrawUnreachedBar) {
+            mUnreachedRectF.left = mReachedRectF.right;
+            mUnreachedRectF.right = getWidth() - getPaddingRight();
+            mUnreachedRectF.top = getPaddingTop() + heightWithoutPadding/2.0f - mUnreachedBarHeight/2.0f;
+            mUnreachedRectF.bottom = mUnreachedRectF.top + mUnreachedBarHeight;
+        }
+    }
+
+    private void setupRectWithoutText_topToBottom() {
+        mReachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mReachedBarWidth/2.0f;
+        mReachedRectF.top = getPaddingTop();
+        mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
+        mReachedRectF.bottom = mReachedRectF.top +  heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress;
+
+        if (mIfDrawUnreachedBar) {
+            mUnreachedRectF.left = getPaddingLeft() + widthWithoutPadding/2.0f - mUnreachedBarWidth/2.0f;
+            mUnreachedRectF.top = mReachedRectF.bottom;
+            mUnreachedRectF.right = mUnreachedRectF.left + mUnreachedBarWidth;
+            mUnreachedRectF.bottom = getHeight() - getPaddingBottom();
+        }
+    }
+
+    private void formatText() {
+        String format = isHorizontal ? "%d" : "%3d";
+        mText = String.format(format, mShownProgress * 100 / mMaxProgress);
+        mText = mPrefix + mText + mSuffix;
     }
 
     public float getReachedBarHeight() {
-        if (mOrientation == ORIENTATION_HORIZONTAL)
+        if (isHorizontal)
             return mReachedBarHeight;
         else
             return 0;
     }
 
     public float getUnreachedBarHeight() {
-        if (mOrientation == ORIENTATION_HORIZONTAL)
+        if (isHorizontal)
             return mUnreachedBarHeight;
         else
             return 0;
     }
 
     public float getReachedBarWidth() {
-        if (mOrientation == ORIENTATION_VERTICAL)
+        if (!isHorizontal)
             return mReachedBarWidth;
         else
             return 0;
     }
 
     public float getUnreachedBarWidth() {
-        if (mOrientation == ORIENTATION_VERTICAL)
+        if (!isHorizontal)
             return mUnreachedBarWidth;
         else
             return 0;
     }
 
     public void setReachedBarHeight(float height) {
-        if (mOrientation == ORIENTATION_HORIZONTAL)
+        if (isHorizontal)
             mReachedBarHeight = height;
     }
 
     public void setUnreachedBarHeight(float height) {
-        if (mOrientation == ORIENTATION_HORIZONTAL)
+        if (isHorizontal)
             mUnreachedBarHeight = height;
     }
 
     public void setReachedBarWidth(float width) {
-        if (mOrientation == ORIENTATION_VERTICAL)
+        if (!isHorizontal)
             mReachedBarWidth = width;
     }
 
     public void setUnreachedBarWidth(float width) {
-        if (mOrientation == ORIENTATION_VERTICAL)
+        if (!isHorizontal)
             mUnreachedBarWidth = width;
     }
 }
