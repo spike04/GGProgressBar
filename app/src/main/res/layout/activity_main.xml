@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_bar"
         android:layout_alignParentLeft="true"
-        app:gpb_progress="86"
+        app:gpb_progress="6"
         app:gpb_text_visibility="true"
         app:gpb_round_corner="false"
         app:orientation="bottom_to_top" />

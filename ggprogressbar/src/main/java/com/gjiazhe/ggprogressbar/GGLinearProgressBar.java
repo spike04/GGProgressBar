@@ -152,6 +152,10 @@ public class GGLinearProgressBar extends GGProgressBar {
                 drawBar(canvas, mUnreachedRectF, mUnreachedBarWidth, mUnreachedBarPaint);
             }
         }
+        Paint a = new Paint();
+        a.setColor(Color.RED);
+        canvas.drawLine(getWidth() / 2, getHeight() / 2, getWidth() / 2 + 20, getHeight() / 2, a);
+        canvas.drawLine(0, mDrawTextY, 20, mDrawTextY, a);
     }
 
     private void drawBar(Canvas canvas, RectF bar, float barSize, Paint barPaint) {
@@ -233,7 +237,7 @@ public class GGLinearProgressBar extends GGProgressBar {
 
     private void setupRectFWithText_topToBottom() {
         formatText();
-        float drawTextWidth = mTextPaint.measureText(mPrefix + "100" + mSuffix);
+        float drawTextWidth = mTextPaint.measureText(mText);
         mDrawTextX = getPaddingLeft() + widthWithoutPadding /2.0f - drawTextWidth/2.0f;
 
         if (mShownProgress == 0) {
@@ -263,7 +267,7 @@ public class GGLinearProgressBar extends GGProgressBar {
 
     private void setupRectFWithText_bottomToTop() {
         formatText();
-        float drawTextWidth = mTextPaint.measureText(mPrefix + "100" + mSuffix);
+        float drawTextWidth = mTextPaint.measureText(mText);
         mDrawTextX = getPaddingLeft() + widthWithoutPadding /2.0f - drawTextWidth/2.0f;
 
         if (mShownProgress == 0) {
@@ -329,8 +333,7 @@ public class GGLinearProgressBar extends GGProgressBar {
     }
 
     private void formatText() {
-        String format = isHorizontal ? "%d" : "%3d";
-        mText = String.format(format, mShownProgress * 100 / mMaxProgress);
+        mText = String.format("%d", mShownProgress * 100 / mMaxProgress);
         mText = mPrefix + mText + mSuffix;
     }
 
