@@ -24,7 +24,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/linear_bar_lr"
         app:orientation="right_to_left"
-        app:gpb_progress="50"
+        app:gpb_progress="97"
         app:gpb_round_corner="true"
         app:gpb_text_visibility="true" />
 
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_bar"
         android:layout_alignParentLeft="true"
-        app:gpb_progress="3"
+        app:gpb_progress="86"
         app:gpb_text_visibility="true"
         app:gpb_round_corner="false"
         app:orientation="bottom_to_top" />
@@ -44,10 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_bar"
         android:layout_toRightOf="@id/vertical_bar"
-        app:gpb_progress="0"
+        app:gpb_progress="50"
         app:gpb_text_visibility="true"
         app:gpb_round_corner="false"
-        app:orientation="top_to_bottom"/>
+        app:orientation="top_to_bottom" />
 
     <com.gjiazhe.ggprogressbar.GGArcProgressBar
         android:id="@+id/circular_bar"

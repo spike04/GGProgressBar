@@ -3,7 +3,9 @@ package com.gjiazhe.ggprogressbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
@@ -236,19 +238,19 @@ public class GGLinearProgressBar extends GGProgressBar {
 
         if (mShownProgress == 0) {
             mIfDrawReachedBar = false;
-            mDrawTextY = getPaddingTop() + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
+            mDrawTextY = getPaddingTop() + mTextSize - mTextPaint.descent();
         } else {
             mIfDrawReachedBar = true;
+            mDrawTextY = getPaddingTop() + heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress - (mTextPaint.ascent() + mTextPaint.descent())/2.0f;
+            if (mDrawTextY + mTextPaint.descent() > getHeight() - getPaddingBottom()) {
+                mDrawTextY = getHeight() - getPaddingBottom() - mTextPaint.descent();
+            } else if (mDrawTextY + mTextPaint.ascent() < getPaddingTop()){
+                mDrawTextY = getPaddingTop() + mTextSize - mTextPaint.descent();
+            }
             mReachedRectF.left = getPaddingLeft() + widthWithoutPadding /2.0f - mReachedBarWidth/2.0f;
             mReachedRectF.top = getPaddingTop();
             mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
-            mReachedRectF.bottom = mReachedRectF.top + heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress - mTextOffset;
-            mDrawTextY = mReachedRectF.bottom + mTextOffset + mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
-        }
-
-        if (mDrawTextY + mTextPaint.descent() > getHeight() - getPaddingBottom()) {
-            mDrawTextY = getHeight() - getPaddingBottom() - mTextPaint.descent();
-            mReachedRectF.bottom = mDrawTextY - mTextOffset - mTextSize/2.0f + (mTextPaint.descent() + mTextPaint.ascent())/2.0f;
+            mReachedRectF.bottom = mDrawTextY + mTextPaint.ascent() - mTextOffset;
         }
 
         if (mIfDrawUnreachedBar) {
@@ -266,19 +268,19 @@ public class GGLinearProgressBar extends GGProgressBar {
 
         if (mShownProgress == 0) {
             mIfDrawReachedBar = false;
-            mDrawTextY = getHeight() - getPaddingBottom() - (mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f);
+            mDrawTextY = getHeight() - getPaddingBottom() - mTextPaint.descent();
         } else {
             mIfDrawReachedBar = true;
+            mDrawTextY = getHeight() - getPaddingBottom() - heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress - (mTextPaint.ascent() + mTextPaint.descent())/2.0f;
+            if (mDrawTextY + mTextPaint.descent() > getHeight() - getPaddingBottom()) {
+                mDrawTextY = getHeight() - getPaddingBottom() - mTextPaint.descent();
+            } else if (mDrawTextY + mTextPaint.ascent() < getPaddingTop()){
+                mDrawTextY = getPaddingTop() + mTextSize - mTextPaint.descent();
+            }
             mReachedRectF.left =  getPaddingLeft() + widthWithoutPadding /2.0f - mReachedBarWidth/2.0f;
             mReachedRectF.bottom = getHeight() - getPaddingBottom();
             mReachedRectF.right = mReachedRectF.left + mReachedBarWidth;
-            mReachedRectF.top = mReachedRectF.bottom - heightWithoutPadding / (mMaxProgress * 1.0f) * mShownProgress + mTextOffset;
-            mDrawTextY = mReachedRectF.top - mTextOffset - (mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f);
-        }
-
-        if (mDrawTextY + mTextPaint.ascent() < getPaddingTop()) {
-            mDrawTextY = getPaddingTop() - mTextPaint.ascent();
-            mReachedRectF.top = mDrawTextY + mTextOffset - (mTextSize/2.0f - (mTextPaint.descent() + mTextPaint.ascent())/2.0f);
+            mReachedRectF.top = mDrawTextY + mTextPaint.descent() + mTextOffset;
         }
 
         if (mIfDrawUnreachedBar) {
