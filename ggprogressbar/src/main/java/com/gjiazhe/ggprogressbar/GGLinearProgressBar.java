@@ -152,10 +152,6 @@ public class GGLinearProgressBar extends GGProgressBar {
                 drawBar(canvas, mUnreachedRectF, mUnreachedBarWidth, mUnreachedBarPaint);
             }
         }
-        Paint a = new Paint();
-        a.setColor(Color.RED);
-        canvas.drawLine(getWidth() / 2, getHeight() / 2, getWidth() / 2 + 20, getHeight() / 2, a);
-        canvas.drawLine(0, mDrawTextY, 20, mDrawTextY, a);
     }
 
     private void drawBar(Canvas canvas, RectF bar, float barSize, Paint barPaint) {
