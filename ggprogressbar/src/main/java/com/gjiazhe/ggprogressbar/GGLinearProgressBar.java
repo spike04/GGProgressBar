@@ -181,7 +181,7 @@ public class GGLinearProgressBar extends GGProgressBar {
             mIfDrawReachedBar = true;
             mReachedRectF.left = getPaddingLeft();
             mReachedRectF.top = getPaddingTop() + (heightWithoutPadding)/2.0f - mReachedBarHeight/2.0f;
-            mReachedRectF.right = mReachedRectF.left + widthWithoutPadding / (getMax() * 1.0f) * getShownProgress() - mTextOffset;
+            mReachedRectF.right = mReachedRectF.left + widthWithoutPadding / (getMax() * 1.0f) * getShownProgress() - mTextOffset - drawTextWidth/2.0f;
             mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
             mDrawTextX = mReachedRectF.right + mTextOffset;
         }
@@ -211,7 +211,7 @@ public class GGLinearProgressBar extends GGProgressBar {
             mIfDrawReachedBar = true;
             mReachedRectF.right =getWidth() - getPaddingRight();
             mReachedRectF.top = getPaddingTop() + (heightWithoutPadding)/2.0f - mReachedBarHeight/2.0f;
-            mReachedRectF.left = mReachedRectF.right - widthWithoutPadding / (getMax() * 1.0f) * getShownProgress() + mTextOffset;
+            mReachedRectF.left = mReachedRectF.right - widthWithoutPadding / (getMax() * 1.0f) * getShownProgress() + mTextOffset + drawTextWidth/2.0f;
             mReachedRectF.bottom = mReachedRectF.top + mReachedBarHeight;
             mDrawTextX = mReachedRectF.left - mTextOffset - drawTextWidth;
         }
