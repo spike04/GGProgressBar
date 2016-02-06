@@ -13,6 +13,7 @@
         <attr name="gpb_duration" format="integer"/>
         <attr name="gpb_prefix" format="string"/>
         <attr name="gpb_suffix" format="string"/>
+        <attr name="gpb_round_corner" format="boolean"/>
 
         <!-- for Linear Progress Bar -->
         <attr name="orientation" format="enum">
@@ -21,7 +22,6 @@
             <enum name="right_to_left" value="3"/>
             <enum name="bottom_to_top" value="4"/>
         </attr>
-        <attr name="gpb_round_corner" format="boolean"/>
         <attr name="gpb_reached_bar_height" format="dimension"/>
         <attr name="gpb_unreached_bar_height" format="dimension"/>
         <attr name="gpb_reached_bar_width" format="dimension"/>

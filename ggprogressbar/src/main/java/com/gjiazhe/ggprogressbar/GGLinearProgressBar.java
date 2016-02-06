@@ -3,9 +3,7 @@ package com.gjiazhe.ggprogressbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
@@ -45,11 +43,13 @@ public class GGLinearProgressBar extends GGProgressBar {
     private float mUnreachedBarWidth;
 
     /**
-     * if the reached bar and unreached bar has round corners
+     * the height of view without paddingTop and paddingBottom
      */
-    private boolean mIfRoundcorner;
-
     private int heightWithoutPadding;
+
+    /**
+     * the width of view without paddingLeft and paddingRight
+     */
     private int widthWithoutPadding;
 
     public GGLinearProgressBar(Context context) {
@@ -78,10 +78,14 @@ public class GGLinearProgressBar extends GGProgressBar {
             mReachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_width, default_reached_bar_size);
             mUnreachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_width, default_unreached_bar_size);
         }
-        mIfRoundcorner = a.getBoolean(R.styleable.GGProgressBar_gpb_round_corner, false);
 
         a.recycle();
         setupPaints();
+    }
+
+    @Override
+    protected void setupPaints() {
+        super.setupPaints();
     }
 
     @Override

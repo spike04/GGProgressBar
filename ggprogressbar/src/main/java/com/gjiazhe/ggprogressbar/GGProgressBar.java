@@ -57,6 +57,11 @@ public abstract class GGProgressBar extends View {
      */
     protected String mPrefix;
 
+    /**
+     * whether the reached bar and unreached bar has round corners
+     */
+    protected boolean mIfRoundcorner;
+
     protected int mProgressDuration;
     protected ValueAnimator mProgressAnimator;
 
@@ -87,6 +92,8 @@ public abstract class GGProgressBar extends View {
             mShownProgress = mActualProgress = mMaxProgress;
         }
         mProgressDuration = a.getInt(R.styleable.GGProgressBar_gpb_duration, 1500);
+
+        mIfRoundcorner = a.getBoolean(R.styleable.GGProgressBar_gpb_round_corner, false);
 
         a.recycle();
     }

@@ -15,8 +15,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Button add_btn;
     private Button reset_btn;
-    private GGLinearProgressBar verticalBar;
-    private GGLinearProgressBar linearProgressBar;
+    private GGLinearProgressBar linearBar_tb;
+    private GGLinearProgressBar linearBar_lr;
+    private GGLinearProgressBar linearBar_bt;
+    private GGLinearProgressBar linearBar_rl;
     private GGArcProgressBar circularBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,15 +27,19 @@ public class MainActivity extends AppCompatActivity {
 
         add_btn = (Button) findViewById(R.id.add_btn);
         reset_btn = (Button) findViewById(R.id.reset_btn);
-        verticalBar = (GGLinearProgressBar) findViewById(R.id.vertical_bar);
-        linearProgressBar = (GGLinearProgressBar) findViewById(R.id.linear_bar);
-        circularBar = (GGArcProgressBar) findViewById(R.id.circular_bar);
+        linearBar_tb = (GGLinearProgressBar) findViewById(R.id.linear_bar_tb);
+        linearBar_lr = (GGLinearProgressBar) findViewById(R.id.linear_bar_lr);
+        linearBar_bt = (GGLinearProgressBar) findViewById(R.id.linear_bar_bt);
+        linearBar_rl = (GGLinearProgressBar) findViewById(R.id.linear_bar_rl);
+        circularBar = (GGArcProgressBar) findViewById(R.id.circular_bar_1);
 
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verticalBar.addProgressBy(10);
-                linearProgressBar.addProgressBy(10);
+                linearBar_tb.addProgressBy(10);
+                linearBar_lr.addProgressBy(10);
+                linearBar_bt.addProgressBy(10);
+                linearBar_rl.addProgressBy(10);
                 circularBar.addProgressBy(10);
             }
         });
@@ -41,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
         reset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verticalBar.resetProgress();
-                linearProgressBar.resetProgress();
+                linearBar_tb.resetProgress();
+                linearBar_lr.resetProgress();
+                linearBar_bt.resetProgress();
+                linearBar_rl.resetProgress();
                 circularBar.resetProgress();
             }
         });

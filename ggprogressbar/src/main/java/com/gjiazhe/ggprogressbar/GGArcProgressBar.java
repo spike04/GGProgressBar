@@ -34,6 +34,7 @@ public class GGArcProgressBar extends GGProgressBar {
         mReachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_reached_bar_width, default_reached_bar_width);
         mUnreachedBarWidth = a.getDimension(R.styleable.GGProgressBar_gpb_unreached_bar_width, default_unreached_bar_width);
         mStartAngle = a.getFloat(R.styleable.GGProgressBar_gpb_start_angle, 0);
+        mIfRoundcorner = a.getBoolean(R.styleable.GGProgressBar_gpb_round_corner, false);
 
         a.recycle();
         setupPaints();
@@ -44,6 +45,10 @@ public class GGArcProgressBar extends GGProgressBar {
         super.setupPaints();
         mReachedBarPaint.setStyle(Paint.Style.STROKE);
         mReachedBarPaint.setStrokeWidth(mReachedBarWidth);
+        if (mIfRoundcorner) {
+            mReachedBarPaint.setStrokeCap(Paint.Cap.ROUND);
+        }
+
         if (mIfDrawUnreachedBar) {
             mUnreachedBarPaint.setStyle(Paint.Style.STROKE);
             mUnreachedBarPaint.setStrokeWidth(mUnreachedBarWidth);

@@ -11,67 +11,97 @@
     tools:context="com.gjiazhe.ggprogressbar.demo.MainActivity">
 
     <com.gjiazhe.ggprogressbar.GGLinearProgressBar
-        android:id="@+id/linear_bar_lr"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        app:orientation="left_to_right"
-        app:gpb_progress="50"
-        app:gpb_round_corner="true"
-        app:gpb_text_visibility="true" />
+        android:id="@+id/linear_bar_warning_red"
+        style="@style/GG_ProgressBar_Beauty_Red"
+        app:gpb_progress="100"/>
     <com.gjiazhe.ggprogressbar.GGLinearProgressBar
-        android:id="@+id/linear_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linear_bar_lr"
-        app:orientation="right_to_left"
-        app:gpb_progress="97"
+        android:id="@+id/linear_bar_funny_orange"
+        style="@style/GG_ProgressBar_Funny_Orange"
+        android:layout_below="@+id/linear_bar_warning_red"
+        app:gpb_reached_bar_height="10dp"
+        app:gpb_unreached_bar_height="8dp"
+        app:gpb_text_size="20sp"
         app:gpb_round_corner="true"
-        app:gpb_text_visibility="true" />
+        app:gpb_progress="80"/>
+    <com.gjiazhe.ggprogressbar.GGLinearProgressBar
+        android:id="@+id/linear_bar_grace_yellow"
+        style="@style/GG_ProgressBar_Grace_Yellow"
+        android:layout_below="@+id/linear_bar_funny_orange"
+        app:gpb_reached_bar_height="10dp"
+        app:gpb_unreached_bar_height="8dp"
+        app:gpb_progress="60"
+        app:gpb_text_size="20sp"/>
+    <com.gjiazhe.ggprogressbar.GGLinearProgressBar
+        android:id="@+id/linear_bar_passing_green"
+        style="@style/GG_ProgressBar_Passing_Green"
+        android:layout_below="@id/linear_bar_grace_yellow"
+        app:gpb_progress="40"/>
+    <com.gjiazhe.ggprogressbar.GGLinearProgressBar
+        android:id="@+id/linear_bar_relax_blue"
+        style="@style/GG_ProgressBar_Relax_Blue"
+        android:layout_below="@+id/linear_bar_passing_green"
+        app:gpb_progress="20"/>
 
     <com.gjiazhe.ggprogressbar.GGLinearProgressBar
-        android:id="@+id/vertical_bar"
+        android:id="@+id/linear_bar_lr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_bar"
+        android:layout_below="@+id/linear_bar_relax_blue"
+        app:orientation="left_to_right" />
+    <com.gjiazhe.ggprogressbar.GGLinearProgressBar
+        android:id="@+id/linear_bar_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:orientation="right_to_left" />
+    <com.gjiazhe.ggprogressbar.GGLinearProgressBar
+        android:id="@+id/linear_bar_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_bar_lr"
+        android:layout_above="@id/linear_bar_rl"
         android:layout_alignParentLeft="true"
-        app:gpb_progress="6"
-        app:gpb_text_visibility="true"
-        app:gpb_round_corner="false"
         app:orientation="bottom_to_top" />
     <com.gjiazhe.ggprogressbar.GGLinearProgressBar
         android:id="@+id/linear_bar_tb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_bar"
-        android:layout_toRightOf="@id/vertical_bar"
-        app:gpb_progress="50"
-        app:gpb_text_visibility="true"
-        app:gpb_round_corner="false"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/linear_bar_lr"
+        android:layout_above="@id/linear_bar_rl"
         app:orientation="top_to_bottom" />
 
     <com.gjiazhe.ggprogressbar.GGArcProgressBar
-        android:id="@+id/circular_bar"
-        android:layout_width="50dp"
+        android:id="@+id/circular_bar_1"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_bar"
-        android:layout_toRightOf="@id/linear_bar_tb"
+        android:layout_below="@+id/linear_bar_lr"
+        android:layout_toRightOf="@id/linear_bar_bt"
+        app:gpb_start_angle="90"/>
+    <com.gjiazhe.ggprogressbar.GGArcProgressBar
+        android:id="@+id/circular_bar_2"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_bar_lr"
+        android:layout_toRightOf="@id/circular_bar_1"
+        app:gpb_reached_bar_width="10dp"
+        app:gpb_progress="20"
         app:gpb_start_angle="90"
-        style="@style/GG_ProgressBar_Relax_Blue"
-        app:gpb_progress="90"/>
+        app:gpb_round_corner="true"/>
 
     <Button
         android:id="@+id/reset_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/linear_bar_tb"
+        android:layout_above="@id/linear_bar_rl"
         android:text="reset"/>
 
     <Button
         android:id="@+id/add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/linear_bar_rl"
         android:layout_toLeftOf="@id/reset_btn"
         android:text="+10%"/>
 </RelativeLayout>
