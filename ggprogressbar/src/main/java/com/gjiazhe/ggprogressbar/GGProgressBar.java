@@ -202,6 +202,12 @@ public abstract class GGProgressBar extends View {
         }
     }
 
+    public void setProgressDuration(int duration) {
+        if (duration > 0) {
+            mProgressDuration = duration;
+        }
+    }
+
     public String getSuffix() {
         return mSuffix;
     }
