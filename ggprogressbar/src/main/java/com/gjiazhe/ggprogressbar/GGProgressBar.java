@@ -115,20 +115,11 @@ public abstract class GGProgressBar extends View {
     }
 
 
-    /**
-     * Get progress text color.
-     *
-     * @return progress text color.
-     */
+
     public int getTextColor() {
         return mTextColor;
     }
 
-    /**
-     * Get progress text size.
-     *
-     * @return progress text size.
-     */
     public float getProgressTextSize() {
         return mTextSize;
     }
